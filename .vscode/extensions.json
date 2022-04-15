@@ -1,0 +1,6 @@
+{
+    "recommendations": [
+        "dunstontc.vscode-rust-syntax",
+        "rust-lang.rust"
+    ]
+}
