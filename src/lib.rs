@@ -1,48 +1,11 @@
-use std::{
-    cmp::PartialOrd,
-    fmt::Debug,
-    marker::Sized,
-};
-
-fn main() {
-    // input data
-    let mut list_0 = vec![1, 12, 9, 5, 6, 10];
-    let mut list_1 = vec![1, 12, 9, 5, 6, 10];
-    let mut list_2 = vec![1, 12, 9, 5, 6, 10];
-    let mut list_3 = vec![1, 12, 9, 5, 6, 10];
-    let mut list_4 = vec![1, 12, 9, 5, 6, 10];
-    let mut list_5 = vec![1, 12, 9, 5, 6, 10];
-
-    // sort array
-    let list_0 = bubble_sort(&mut list_0);
-
-    let list_1 = selection_sort(&mut list_1);
-
-    let list_2 = insertion_sort(&mut list_2);
-
-    let list_3 = heap_sort(&mut list_3);
-
-    let size = list_4.len() - 1;
-    let list_4 = merge_sort(&mut list_4, 0, size);
-
-    let size = (list_5.len() - 1) as isize;
-    let list_5 = quick_sort(&mut list_5, 0, size);
-
-    // output data
-    println!("{:?}", list_0);
-    println!("{:?}", list_1);
-    println!("{:?}", list_2);
-    println!("{:?}", list_3);
-    println!("{:?}", list_4);
-    println!("{:?}", list_5);
-}
+use std::{cmp::PartialOrd, fmt::Debug, marker::Sized};
 
 fn bubble_sort<T: PartialOrd>(arr: &mut Vec<T>) -> &Vec<T> {
     let arr_length = arr.len();
-    for i in 0..arr_length-1 {
-        for j in 0..arr_length-i-1 {
-            if arr[j] > arr[j+1] {
-                arr.swap(j, j+1);
+    for i in 0..arr_length - 1 {
+        for j in 0..arr_length - i - 1 {
+            if arr[j] > arr[j + 1] {
+                arr.swap(j, j + 1);
             }
         }
     }
@@ -51,8 +14,8 @@ fn bubble_sort<T: PartialOrd>(arr: &mut Vec<T>) -> &Vec<T> {
 
 fn selection_sort<T: PartialOrd>(arr: &mut Vec<T>) -> &Vec<T> {
     let arr_length = arr.len();
-    for i in 0..arr_length-1 {
-        for j in i+1..arr_length {
+    for i in 0..arr_length - 1 {
+        for j in i + 1..arr_length {
             if arr[i] > arr[j] {
                 arr.swap(i, j);
             }
@@ -64,11 +27,10 @@ fn selection_sort<T: PartialOrd>(arr: &mut Vec<T>) -> &Vec<T> {
 fn insertion_sort<T: PartialOrd>(arr: &mut Vec<T>) -> &Vec<T> {
     let arr_length = arr.len();
     for i in 1..arr_length {
-        for j in (0..i+1).rev() {
-            if j > 0 && arr[j-1] < arr[j] {
-                arr.swap(j, j-1);
-            }
-            else {
+        for j in (0..i + 1).rev() {
+            if j > 0 && arr[j - 1] < arr[j] {
+                arr.swap(j, j - 1);
+            } else {
                 break;
             }
         }
@@ -79,7 +41,7 @@ fn insertion_sort<T: PartialOrd>(arr: &mut Vec<T>) -> &Vec<T> {
 
 fn merge_sort<T: PartialOrd + Debug + Copy>(arr: &mut Vec<T>, l: usize, r: usize) -> &Vec<T> {
     if l < r {
-        let m = l + (r - l)/2;
+        let m = l + (r - l) / 2;
         merge_sort(arr, l, m);
         merge_sort(arr, m + 1, r);
         merge(arr, l, m, r);
@@ -88,7 +50,12 @@ fn merge_sort<T: PartialOrd + Debug + Copy>(arr: &mut Vec<T>, l: usize, r: usize
 }
 
 // function for merge sort
-fn merge<T: PartialOrd + Sized + Debug + Copy>(arr: &mut Vec<T>, p: usize, q: usize, r: usize) -> &Vec<T> {
+fn merge<T: PartialOrd + Sized + Debug + Copy>(
+    arr: &mut Vec<T>,
+    p: usize,
+    q: usize,
+    r: usize,
+) -> &Vec<T> {
     let l_size = q - p + 1;
     let r_size = r - q;
 
@@ -98,20 +65,19 @@ fn merge<T: PartialOrd + Sized + Debug + Copy>(arr: &mut Vec<T>, p: usize, q: us
     for i in 0..l_size {
         left.push(arr[i]);
     }
-    // println!("Created {:?}", left);
+
     for i in 0..r_size {
         right.push(arr[i]);
     }
-    // println!("Created {:?}", right);
 
     for i in 0..l_size {
         left[i] = arr[p + i];
     }
-    // println!("+ {:?}", left);
+
     for i in 0..r_size {
         right[i] = arr[q + 1 + i];
     }
-    // println!("+ {:?}", right);
+
     // init all vars
     let mut i = 0;
     let mut j = 0;
@@ -152,7 +118,7 @@ fn heap_sort<T: PartialOrd + Debug>(arr: &mut Vec<T>) -> &Vec<T> {
     for index in (0..arr_length).rev() {
         arr.swap(0, index);
         heapify(arr, index, 0);
-    } 
+    }
     arr
 }
 
@@ -178,13 +144,17 @@ fn heapify<T: PartialOrd>(arr: &mut Vec<T>, size: usize, index: usize) -> &Vec<T
 
 fn build_heap<T: PartialOrd + Debug>(arr: &mut Vec<T>) -> &Vec<T> {
     let arr_length = arr.len();
-    for index in (0..arr_length/2).rev() {
+    for index in (0..arr_length / 2).rev() {
         heapify(arr, arr_length, index);
     }
     arr
 }
 
-fn quick_sort<T: PartialOrd + Sized + Debug + Copy>(arr: &mut Vec<T>, low: isize, high: isize) -> &Vec<T> {
+fn quick_sort<T: PartialOrd + Sized + Debug + Copy>(
+    arr: &mut Vec<T>,
+    low: isize,
+    high: isize,
+) -> &Vec<T> {
     if low < high {
         let pi = partition(arr, low, high) as isize;
         quick_sort(arr, low, pi - 1);
@@ -194,7 +164,11 @@ fn quick_sort<T: PartialOrd + Sized + Debug + Copy>(arr: &mut Vec<T>, low: isize
 }
 
 // function for quick sort
-fn partition<T: PartialOrd + Sized + Debug + Copy>(arr: &mut Vec<T>, low: isize, high: isize) -> usize {
+fn partition<T: PartialOrd + Sized + Debug + Copy>(
+    arr: &mut Vec<T>,
+    low: isize,
+    high: isize,
+) -> usize {
     let high = high as usize;
     let pivot = arr[high];
 
@@ -210,6 +184,63 @@ fn partition<T: PartialOrd + Sized + Debug + Copy>(arr: &mut Vec<T>, low: isize,
         }
     }
     let i = i as usize;
-    arr.swap(i+1, high);
+    arr.swap(i + 1, high);
     i + 1
+}
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+
+    #[test]
+    fn test_bubble() {
+        // input data
+        let mut list = vec![1, 12, 9, 5, 6, 10];
+        let list = bubble_sort(&mut list);
+        assert_eq!(vec![1, 5, 6, 9, 10, 12], *list);
+    }
+
+    #[test]
+    fn test_selection() {
+        // input data
+        let mut list = vec![1, 12, 9, 5, 6, 10];
+        let list = selection_sort(&mut list);
+        assert_eq!(vec![1, 5, 6, 9, 10, 12], *list);
+    }
+    #[test]
+    fn test_insertion() {
+        // input data
+        let mut list = vec![1, 12, 9, 5, 6, 10];
+        let list = insertion_sort(&mut list);
+        assert_eq!(vec![1, 5, 6, 9, 10, 12], *list);
+    }
+
+    #[test]
+    fn test_heap() {
+        // input data
+        let mut list = vec![1, 12, 9, 5, 6, 10];
+        let list = heap_sort(&mut list);
+        assert_eq!(vec![1, 5, 6, 9, 10, 12], *list);
+    }
+
+    #[test]
+    fn test_merge() {
+        // input data
+        let mut list = vec![1, 12, 9, 5, 6, 10];
+        let size = list.len() - 1;
+        let list = merge_sort(&mut list, 0, size);
+
+        assert_eq!(vec![1, 5, 6, 9, 10, 12], *list);
+    }
+
+    #[test]
+    fn test_quick() {
+        // input data
+        let mut list = vec![1, 12, 9, 5, 6, 10];
+        let size = (list.len() - 1) as isize;
+        let list = quick_sort(&mut list, 0, size);
+
+        assert_eq!(vec![1, 5, 6, 9, 10, 12], *list);
+    }
 }
